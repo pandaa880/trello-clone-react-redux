@@ -1,0 +1,9 @@
+.board {
+  width: 100%;
+}
+
+.board__title {
+  margin: 1rem 0;
+  padding: 0 14px;
+  color: var(--text-200);
+}

@@ -1,12 +1,13 @@
 // initial state
 import { lists as defaultLists } from "../normalized-state";
 
-import { CREATE_LIST, REMOVE_LIST } from "../actions/list-actions";
 import {
-  CREATE_CARD,
-  MOVE_CARD_TO_LIST,
-  REMOVE_CARD_FROM_LIST,
-} from "../actions/card-actions";
+  CREATE_LIST,
+  EDIT_LIST_TITLE,
+  REMOVE_LIST,
+  DRAG_HAPPENED,
+} from "../actions/list-actions";
+import { CREATE_CARD, REMOVE_CARD_FROM_LIST } from "../actions/card-actions";
 
 const listReducer = (lists = defaultLists, action) => {
   const actionType = action.type;
@@ -20,6 +21,15 @@ const listReducer = (lists = defaultLists, action) => {
     return {
       entities: newListsEntities,
       ids: newListsIds,
+    };
+  }
+
+  if (actionType === EDIT_LIST_TITLE) {
+    const { listId, newTitle } = actionPayload;
+    const newList = { ...lists.entities[listId], title: newTitle };
+    return {
+      entities: { ...lists.entities, [listId]: newList },
+      ids: lists.ids,
     };
   }
 
@@ -88,6 +98,58 @@ const listReducer = (lists = defaultLists, action) => {
       entities: { ...lists.entities, [listId]: updatedList },
       ids: lists.ids,
     };
+  }
+
+  // drag
+  if (actionType === DRAG_HAPPENED) {
+    const {
+      droppableIdStart,
+      droppableIdEnd,
+      droppableIndexStart,
+      droppableIndexEnd,
+      draggableId,
+    } = actionPayload;
+
+    // card drops in same list
+    if (droppableIdStart === droppableIdEnd) {
+      const updatedCards = [...lists.entities[droppableIdStart].cards];
+      // swap the order of cards based on index
+      [updatedCards[droppableIndexStart], updatedCards[droppableIndexEnd]] = [
+        updatedCards[droppableIndexEnd],
+        updatedCards[droppableIndexStart],
+      ];
+      // update list
+      const updatedList = {
+        ...lists.entities[droppableIdStart],
+        cards: updatedCards,
+      };
+
+      return {
+        entities: { ...lists.entities, [droppableIdStart]: updatedList },
+        ids: lists.ids,
+      };
+    }
+
+    // card drops in different list
+    if (droppableIdStart !== droppableIdEnd) {
+      // find the list where drag started
+      const listStart = lists.entities[droppableIdStart];
+      // find the list where drag ended
+      const listEnd = lists.entities[droppableIdEnd];
+      // take out the card from the start list
+      const card = listStart.cards.splice(droppableIndexStart, 1);
+      // update the endList with new card
+      listEnd.cards.splice(droppableIndexEnd, 0, card);
+
+      return {
+        entities: {
+          ...lists.entities,
+          [droppableIdStart]: listStart,
+          [droppableIdEnd]: listEnd,
+        },
+        ids: lists.ids,
+      };
+    }
   }
 
   return lists;
