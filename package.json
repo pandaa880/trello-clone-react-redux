@@ -1,5 +1,5 @@
 {
-  "name": "kubric-trello-clone",
+  "name": "trello-clone-react-redux",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
@@ -33,6 +33,7 @@
   "dependencies": {
     "normalizr": "^3.6.0",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
     "react-redux": "^7.2.1",
