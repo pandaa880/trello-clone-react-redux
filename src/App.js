@@ -2,7 +2,7 @@ import React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 
-import ListsContainer from "./containers/ListsContainer";
+import Board from "./components/board/Board";
 import { sort } from "./actions/list-actions";
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <main>
-        <ListsContainer />
+        <Board />
       </main>
     </DragDropContext>
   );
