@@ -1,0 +1,60 @@
+.wrapper {
+  margin: 1rem 0 0 0;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin: 0 0 4px 0;
+}
+
+.formInput {
+  padding: 8px 4px;
+  font-size: 16px;
+}
+
+.formTextArea {
+  composes: formInput;
+}
+
+.formSubmitBtn {
+  align-self: flex-end;
+  margin: 1rem 0 0 0;
+  padding: 8px 4px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  outline-color: transparent;
+  width: 100px;
+  background-color: var(--primary-100);
+  color: var(--text-200);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all linear 0.2s;
+}
+
+.formSubmitBtn:hover {
+  box-shadow: var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+.formSubmitBtn:disabled {
+  background-color: var(--bg-100);
+  color: #ccc;
+  cursor: not-allowed;
+}
